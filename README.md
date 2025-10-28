@@ -1,16 +1,87 @@
-# uts
+## Pengembang
 
-A new Flutter project.
+Nama: Dimas Bagus Hari Murti  
+NIM: 240605110080  
+Kelas: B  
+Mata Kuliah: Mobile Programming  
+Dosen Pengampu: A'la Syauqi,M.Kom
+Tugas: UTS
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# Dimusic App
 
-A few resources to get you started if this is your first Flutter project:
+Aplikasi "Dimusic" adalah aplikasi pemutar musik sederhana berbasis Flutter yang menampilkan daftar lagu dari API "iTunes".  
+Aplikasi ini dibuat untuk memenuhi bagian dari tugas UTS Mobile Programming.  
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Deskripsi Singkat
+
+Home_Page.dart berfungsi untuk menampilkan berbagai daftar lagu berdasarkan kategori seperti:  
+- Made for You  
+- Popular Indonesia Singer  
+- Taylor Swift Collection  
+- Top Lyodra Song  
+- Top NIKI Song  
+
+Selain itu, didalam file music_player_pages.dart pengguna juga dapat:
+- Memutar lagu (play, pause, next, previous)
+- Menyukai lagu (like)
+- Menambahkan lagu ke dalam playlist  
+
+
+## Fitur Utama
+
+1. Menampilkan Lagu dari API iTunes  
+   Lagu ditampilkan secara dinamis menggunakan data real-time dari API iTunes.  
+
+2. Pemutar Musik Interaktif  
+   Lagu dapat diputar langsung dari aplikasi melalui halaman Music_Player_Page.dart  
+
+3. Fitur Like dan Playlist 
+   Lagu dapat ditandai sebagai favorit dan ditambahkan ke playlist pribadi.  
+
+4. Navigasi Antar Halaman  
+   Menggunakan "BottomNavigationBar" dan "Navigator.push()" untuk berpindah antar halaman seperti Home, Music, Like, dan Playlist.  
+
+5. Tampilan Tema yang dinamis  
+   Aplikasi mendukung Light Mode dan Dark Mode yang otomatis menyesuaikan dengan preferensi pengguna.
+
+
+## Penjelasan Kode Utama
+
+### 1. `ItunesApi.fetchSongs()`
+Berfungsi untuk mengambil data lagu dari API iTunes berdasarkan kata kunci tertentu.  
+Contoh:
+final songs = await ItunesApi.fetchSongs("Taylor Swift");
+
+### 2. `MusicPlayerPage`
+Halaman ini digunakan untuk memutar lagu.  
+Terdapat tombol "play", "pause", "next", dan "previous" yang berfungsi secara interaktif.
+
+### 3. `LikeManager` & `PlaylistManager`
+Keduanya menggunakan "Provider (ChangeNotifier)" untuk mengelola state secara global.  
+- `LikeManager` menyimpan data lagu yang disukai.  
+- `PlaylistManager` menyimpan data lagu yang ditambahkan ke playlist.  
+
+### 4. `BottomNavigationBar`
+Digunakan sebagai navigasi utama aplikasi agar pengguna bisa berpindah antar halaman dengan mudah.
+
+
+## Desain Tampilan
+
+Tampilan utama menggunakan tema dinamis yang dapat berubah antara light mode dan dark mode sesuai preferensi pengguna.
+Setiap section lagu dapat digeser ke samping (horizontal scroll) menampilkan gambar album, judul lagu, dan nama penyanyi.
+
+
+## Kesimpulan
+
+Aplikasi "Dimusic" berhasil menerapkan konsep-konsep dasar dari "Mobile Programming" menggunakan Flutter, seperti:
+- Pengambilan data dari API eksternal  
+- Navigasi antar halaman  
+- State management dengan Provider  
+- Penggunaan widget UI yang interaktif  
+
+Dengan begitu, aplikasi ini sudah memenuhi kriteria tugas UTS dan masih bisa dikembangkan ke tahap berikutnya, seperti:
+- Menambahkan API yang bisa memutar lagu full  
+- Menyimpan data lokal dengan SQLite  
+- Menambahkan fitur pencarian lagu  

@@ -73,15 +73,3 @@ Tampilan utama menggunakan tema dinamis yang dapat berubah antara light mode dan
 Setiap section lagu dapat digeser ke samping (horizontal scroll) menampilkan gambar album, judul lagu, dan nama penyanyi.
 
 
-## Kesimpulan
-
-Aplikasi "Dimusic" berhasil menerapkan konsep-konsep dasar dari "Mobile Programming" menggunakan Flutter, seperti:
-- Pengambilan data dari API eksternal  
-- Navigasi antar halaman  
-- State management dengan Provider  
-- Penggunaan widget UI yang interaktif  
-
-Dengan begitu, aplikasi ini sudah memenuhi kriteria tugas UTS dan masih bisa dikembangkan ke tahap berikutnya, seperti:
-- Menambahkan API yang bisa memutar lagu full  
-- Menyimpan data lokal dengan SQLite  
-- Menambahkan fitur pencarian lagu  

@@ -5,7 +5,6 @@ NIM: 240605110080
 Kelas: B  
 Mata Kuliah: Mobile Programming  
 Dosen Pengampu: A'la Syauqi,M.Kom
-Tugas: UTS
 
 
 # Dimusic App

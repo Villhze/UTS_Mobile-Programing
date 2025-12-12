@@ -45,20 +45,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> loadSongs() async {
-    final popSongs = await ItunesApi.fetchSongs("indonesian pop");
-    final hiphopSongs = await ItunesApi.fetchSongs("indonesian top");
-    final swiftSongs = await ItunesApi.fetchSongs("Taylor Swift");
-    final indoTrending = await ItunesApi.fetchSongs("Lyodra");
-    final nikiSongs = await ItunesApi.fetchSongs("NIKI");
-
     setState(() {
-      madeForYou = popSongs.take(10).toList();
-      popularSingers = hiphopSongs.take(10).toList();
-      taylorSwiftSongs = swiftSongs.take(10).toList();
-      trendingIndonesia = indoTrending.take(10).toList();
-      nikiTopSong = nikiSongs.take(10).toList();
-      isLoading = false;
+      isLoading = true;
     });
+
+    try {
+      final popSongs = await ItunesApi.fetchSongs("indonesian pop");
+      final hiphopSongs = await ItunesApi.fetchSongs("indonesian top");
+      final swiftSongs = await ItunesApi.fetchSongs("Taylor Swift");
+      final indoTrending = await ItunesApi.fetchSongs("Lyodra");
+      final nikiSongs = await ItunesApi.fetchSongs("NIKI");
+
+      setState(() {
+        madeForYou = popSongs.take(10).toList();
+        popularSingers = hiphopSongs.take(10).toList();
+        taylorSwiftSongs = swiftSongs.take(10).toList();
+        trendingIndonesia = indoTrending.take(10).toList();
+        nikiTopSong = nikiSongs.take(10).toList();
+        isLoading = false;
+      });
+    } on Exception {
+      setState(() {
+        isLoading = false;
+        greeting = "Tidak ada koneksi internet 😢";
+      });
+    } catch (_) {
+      setState(() {
+        isLoading = false;
+        greeting = "Error memuat data.";
+      });
+    }
   }
 
   @override

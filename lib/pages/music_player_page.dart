@@ -5,6 +5,7 @@ import '../models/song_model.dart';
 import '../models/like_manager.dart';
 import '../models/playlist_manager.dart';
 import '../services/audio_service.dart';
+import 'package:just_audio/just_audio.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   final Song song;
@@ -27,13 +28,36 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
   late int currentIndex;
   late Song currentSong;
 
+  Duration currentPosition = Duration.zero;
+  Duration totalDuration = Duration.zero;
+
   @override
   void initState() {
     super.initState();
     currentIndex = widget.index ?? 0;
     currentSong = widget.song;
+    _listenToAudio();
     _playCurrentSong();
   }
+
+  void _listenToAudio() {
+    final player = AudioService.instance.player;
+
+    player.positionStream.listen((pos) {
+      setState(() => currentPosition = pos);
+    });
+
+    player.durationStream.listen((dur) {
+      if (dur != null) {
+        setState(() => totalDuration = dur);
+      }
+    });
+
+    player.playingStream.listen((playing) {
+      setState(() => isPlaying = playing);
+    });
+  }
+
 
   Future<void> _playCurrentSong() async {
     await AudioService.instance.stop();
@@ -45,10 +69,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
     if (isPlaying) {
       await AudioService.instance.pause();
     } else {
-      await AudioService.instance.play(currentSong.previewUrl);
+      await AudioService.instance.resume();
     }
-    setState(() => isPlaying = !isPlaying);
   }
+
 
   void _playNext() {
     if (widget.playlist != null && currentIndex < widget.playlist!.length - 1) {
@@ -68,6 +92,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
       });
       _playCurrentSong();
     }
+  }
+
+  String _formatDuration(Duration d) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    return "${twoDigits(d.inMinutes)}:${twoDigits(d.inSeconds % 60)}";
   }
 
   @override
@@ -137,7 +166,39 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                             fontSize: 16,
                           ),
                         ),
+
                         const SizedBox(height: 25),
+
+                        // ===== PROGRESS BAR + TIMER =====
+                        Slider(
+                          min: 0,
+                          max: totalDuration.inMilliseconds.toDouble(),
+                          value: currentPosition.inMilliseconds.clamp(0, totalDuration.inMilliseconds).toDouble(),
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.white24,
+                          onChanged: (value) async {
+                            final newPos = Duration(milliseconds: value.toInt());
+                            await AudioService.instance.player.seek(newPos);
+                          },
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              _formatDuration(currentPosition),
+                              style: const TextStyle(color: Colors.white70, fontSize: 12),
+                            ),
+                            Text(
+                              _formatDuration(totalDuration),
+                              style: const TextStyle(color: Colors.white70, fontSize: 12),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // ===== CONTROL PANEL =====
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -186,6 +247,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                             ),
                           ],
                         ),
+
                         const SizedBox(height: 15),
                       ],
                     ),
